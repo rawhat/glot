@@ -2,6 +2,8 @@
 
 A simple chatroom using [mist](https://github.com/rawhat/mist)
 
+![a sample screenshot](./screenshot.png)
+
 ### Requirements
 
   - `gleam` (>= v0.22)
