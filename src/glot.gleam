@@ -3,11 +3,12 @@ import gleam/result
 import gleam/string
 import glot/lobby
 import glot/router
+import glot/util
 import mist/http
 import mist
 
 pub fn main() {
-  assert Ok(cwd) = router.get_cwd()
+  assert Ok(cwd) = util.get_cwd()
 
   assert Ok(lobby_handler) = lobby.start()
   let static_root = string.append(cwd, "/dist/")

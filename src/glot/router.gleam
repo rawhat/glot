@@ -6,6 +6,7 @@ import gleam/otp/process.{Sender}
 import gleam/result
 import gleam/string
 import glot/lobby.{LobbyMessage}
+import glot/util
 import mist/file
 import mist/http.{BitBuilderBody, FileBody, HandlerResponse, Response}
 
@@ -68,21 +69,12 @@ pub fn from_app_error(err: AppError) -> HandlerResponse {
   }
 }
 
-pub external fn get_cwd() -> Result(String, Nil) =
-  "file" "get_cwd"
-
-external fn file_extension(file: String) -> String =
-  "filename" "extension"
-
-external fn uri_unquote(uri: String) -> String =
-  "uri_string" "unquote"
-
 pub fn serve_file(path: List(String), root: String) -> AppResult {
   let decoded_path =
     path
     |> string.join("/")
     |> string.replace("..", "")
-    |> uri_unquote
+    |> util.uri_unquote
     |> fn(res) {
       case res {
         "" | "/" -> "index.html"
@@ -100,25 +92,11 @@ pub fn serve_file(path: List(String), root: String) -> AppResult {
   let size = file.size(path_bitstring)
   let content_type =
     decoded_path
-    |> file_extension
-    |> ext_to_content_type
+    |> util.file_extension
+    |> util.ext_to_content_type
   response.new(200)
   |> response.set_body(FileBody(fd, content_type, 0, size))
   |> response.prepend_header("Content-Type", content_type)
   |> Response
   |> Ok
-}
-
-fn ext_to_content_type(ext: String) -> String {
-  case ext {
-    "" -> "application/x-binary"
-    ".gleam" -> "application/gleam"
-    ".js" -> "text/javascript"
-    ".css" -> "text/css"
-    ".html" -> "text/html"
-    ".gif" -> "application/gif"
-    ".mkv" -> "video/x-matroska"
-    ".avi" -> "video/avi"
-    _ -> "text/plain"
-  }
 }
