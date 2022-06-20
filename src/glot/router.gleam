@@ -17,6 +17,7 @@ pub fn handler(app_request: AppRequest) -> AppResult {
       app_request.lobby_handler
       |> lobby.lobby_handler
       |> Ok
+    _ -> Error(NotFound)
   }
 }
 
