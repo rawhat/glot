@@ -35,11 +35,11 @@ pub fn start() -> Result(Sender(LobbyMessage), actor.StartError) {
       case msg {
         Connect(sender) -> {
           let user = User(sender, random_username())
-          let set_nickname =
+          let _ =
             SetNickname(user.username)
             |> chat.encode_chat_message
             |> TextMessage
-          let _ = websocket.send(sender, set_nickname)
+            |> websocket.send(sender)
           let new_users = map.insert(state.users, sender, user)
           broadcast(new_users, UserJoined(user.username))
           LobbyState(users: new_users)
@@ -91,8 +91,11 @@ pub fn lobby_handler(lobby: Sender(LobbyMessage)) -> http.HandlerResponse {
 }
 
 fn send_to_user(user: User, message: ChatMessage) -> Nil {
-  let encoded = chat.encode_chat_message(message)
-  let _ = websocket.send(user.sender, TextMessage(encoded))
+  let _ =
+    message
+    |> chat.encode_chat_message
+    |> TextMessage
+    |> websocket.send(user.sender)
 
   Nil
 }
