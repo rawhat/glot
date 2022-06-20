@@ -6,8 +6,10 @@ const App = () => {
   const ws = useWebsocket("ws://localhost:8080/lobby");
   const [text, setText] = useState("");
   const onSubmit = () => {
-    ws.send(text);
-    setText("");
+    if (text !== "") {
+      ws.send(text);
+      setText("");
+    }
   };
   return (
     <div className="flex h-screen place-content-center place-items-center font-mono">
