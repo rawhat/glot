@@ -1,0 +1,49 @@
+{
+  "name": "assets",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build-js": "tsc --noEmit && esbuild --bundle src/index.tsx --outfile=../dist/js/app.js --minify",
+    "watch-js": "tsc --noEmit && esbuild --bundle src/index.tsx --outfile=../dist/js/app.js --sourcemap --watch",
+    "build-css": "cross-env ENV_BUILD=prod postcss src/index.css -o ../dist/css/app.css",
+    "watch-css": "tailwindcss --input=src/index.css --output=../dist/css/app.css --postcss --watch",
+    "watch": "concurrently \"npm:watch-js\" \"npm:watch-css\"",
+    "watch-local": "concurrently \"tsc --noEmit && esbuild --bundle src/index.tsx --outfile=../dist/js/app.js --sourcemap --watch\" \"tailwindcss --input=src/index.css --output=../dist/css/app.css --postcss --watch\"",
+    "build": "concurrently \"npm:build-js\" \"npm:build-css\"",
+    "lint": "eslint . --ext .ts,.tsx",
+    "server": "reload -d dist -p 3000 -s ../dist/index.html",
+    "serve": "concurrently \"npm:watch-local\" \"npm:server\""
+  },
+  "author": "Alex Manning",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.20",
+    "@types/react-dom": "^17.0.9",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "autoprefixer": "^10.3.4",
+    "concurrently": "^6.2.1",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.12.25",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^14.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.25.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "postcss": "^8.3.6",
+    "postcss-cli": "^8.3.1",
+    "postcss-import": "^14.0.2",
+    "prettier": "^2.3.2",
+    "reload": "^3.2.0",
+    "tailwindcss": "^2.2.11",
+    "typescript": "^4.4.2"
+  }
+}
