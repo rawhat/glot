@@ -15,4 +15,6 @@ There is a `run.sh` script. It does require [watchexec](https://github.com/watch
 
 It just runs both `gleam run` and `npm run watch` in the `assets/` directory.
 
+You'll need to `cd assets && npm install` first.
+
 Then, navigate to `http://localhost:8080` with any number of clients.
